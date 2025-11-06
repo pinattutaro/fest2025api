@@ -11,16 +11,8 @@ const main = async () => {
             userId: process.env.ID,
             updates: [
                 {
-                    flagName: "casino_coins_earned",
-                    increment: 100
-                },
-                {
-                    flagName: "casino_played",
-                    increment: 1
-                },
-                {
-                    flagName: "casino_roulette_played",
-                    increment: 1
+                    flagName: "game_played",
+                    increment: 0
                 }
             ]
         })

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>バーコード生成デモ</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    #barcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>バーコード生成</h2>
+  <input id="inputText" type="text" placeholder="英数字を入力" value="HELLO123">
+  <button id="generate">生成</button>
+
+  <br>
+  <svg id="barcode"></svg>
+
+  <script>
+    const input = document.getElementById("inputText");
+    const btn = document.getElementById("generate");
+
+    function makeBarcode(text) {
+      JsBarcode("#barcode", text, {
+        format: "CODE128",   // 英数字に対応
+        lineColor: "#000",
+        width: 2,
+        height: 100,
+        displayValue: true   // 下に文字を表示
+      });
+    }
+
+    // 初期表示
+    makeBarcode(input.value);
+
+    // ボタン押下で再生成
+    btn.addEventListener("click", () => {
+      makeBarcode(input.value);
+    });
+  </script>
+
+</body>
+</html>
