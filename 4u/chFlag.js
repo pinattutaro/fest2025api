@@ -1,8 +1,15 @@
-const uri = "https://example.com"; // Replace with actual URI
-const id = "user123"; // Replace with actual user ID
-const quest_api_key = "quest-api-key"; // Replace with actual API key
+const id = "gmk7F5"; // Replace with actual user ID
+
+const getData = async () => {
+    const response = await fetch('https://pinattutaro.github.io/fest2025api/4u/env.json');
+    const data = await response.json();
+    console.log(data);
+    return [data.uri, data["x-api-key"]];
+}
 
 const main = async () => {
+    const [uri, quest_api_key] = await getData(); // env.jsonからURIとAPIキーを取得
+
     const response = await fetch(`${uri}/api/users/update-flag`, {
         method: "POST",
         headers: {
@@ -33,4 +40,5 @@ const main = async () => {
     console.log(data.data);
 }
 
+//カジノのルーレットで100コイン獲得したときのフラグ更新
 main();

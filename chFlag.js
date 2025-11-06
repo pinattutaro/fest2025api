@@ -5,7 +5,7 @@ const main = async () => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
-            "x-api-key": "2025fes-quest-key"
+            "x-api-key": process.env.QUEST_API_KEY
         },
         body: JSON.stringify({
             userId: process.env.ID,
