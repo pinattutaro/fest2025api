@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>バーコード・QRコードリーダー</title>
+  <title>QR・バーコードリーダー</title>
 </head>
 <body>
-  <h1>バーコード・QRコードリーダー</h1>
+  <h1>QR・バーコードリーダー</h1>
   <video id="preview" width="300" height="200"></video>
   <p>結果: <span id="result"></span></p>
 
@@ -16,19 +16,24 @@
     const preview = document.getElementById('preview');
     const resultEl = document.getElementById('result');
 
-    codeReader.listVideoInputDevices().then(videoInputDevices => {
-      // カメラを選択
-      const firstDeviceId = videoInputDevices[0].deviceId;
-      codeReader.decodeFromVideoDevice(firstDeviceId, preview, (result, err) => {
+    // ✅ 静的メソッドとして呼び出す（ここがポイント）
+    const devices = await BrowserMultiFormatReader.listVideoInputDevices();
+
+    if (devices.length === 0) {
+      resultEl.textContent = "カメラが見つかりません。";
+    } else {
+      const deviceId = devices[0].deviceId;
+
+      codeReader.decodeFromVideoDevice(deviceId, preview, (result, err) => {
         if (result) {
           resultEl.textContent = result.getText();
           console.log('検出:', result.getText());
         }
-        if (err && !(err instanceof ZXing.NotFoundException)) {
+        if (err && err.name !== 'NotFoundException') {
           console.error(err);
         }
       });
-    });
+    }
   </script>
 </body>
 </html>
