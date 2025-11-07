@@ -44,8 +44,8 @@
         if (result) {
           const text = result.getText();
           const uid = text.includes('https://') ? new URL(text).searchParams.get('id') : text;
-          resultEl.textContent = result.getText();
-          console.log('検出:', result.getText());
+          resultEl.textContent = uid;
+          console.log('検出:', uid);
         }
         if (err && err.name !== 'NotFoundException') {
           console.error(err);
