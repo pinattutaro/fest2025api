@@ -4,41 +4,57 @@
   <meta charset="UTF-8">
   <title>QR・バーコードリーダー</title>
 </head>
+<style>
+  body {
+    display: grid;
+    grid-template-rows: auto auto;
+  }
+
+  #preview {
+    width: 100vw;
+    aspect-ratio: 1;
+  }
+
+  p {
+    font-size: 2vh;
+  }
+</style>
 <body>
-  <h1>QR・バーコードリーダー</h1>
-  <video id="preview" width="300" height="200"></video>
-  <p>結果: <span id="result"></span></p>
-
-  <script type="module">
-    import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
-
-    const codeReader = new BrowserMultiFormatReader();
-    const preview = document.getElementById('preview');
-    const resultEl = document.getElementById('result');
-
-    const constraints = {
-      video: {
-        facingMode: "environment" // リアカメラを指定
-      }
-    };
-
-    navigator.mediaDevices.getUserMedia(constraints)
-      .then(stream => {
-        preview.srcObject = stream;
-        codeReader.decodeFromStream(stream, preview, (result, err) => {
-          if (result) {
-            resultEl.textContent = result.getText();
-            console.log('検出:', result.getText());
-          }
-          if (err && err.name !== 'NotFoundException') {
-            console.error(err);
-          }
-        });
-      })
-      .catch(err => {
-        console.error("カメラの起動に失敗しました。", err);
-        resultEl.textContent = "カメラの起動に失敗しました。";
-      });
-  </script>
+  <!-- <h1>QR・バーコードリーダー</h1> -->
+  <video id="preview"></video>
+  <p>id: <span id="result"></span></p>
 </body>
+<script type="module">
+  import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
+
+  const codeReader = new BrowserMultiFormatReader();
+  const preview = document.getElementById('preview');
+  const resultEl = document.getElementById('result');
+
+  const constraints = {
+    video: {
+      facingMode: "environment" // リアカメラを指定
+    }
+  };
+
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(stream => {
+      preview.srcObject = stream;
+      codeReader.decodeFromStream(stream, preview, (result, err) => {
+        if (result) {
+          const text = result.getText();
+          const uid = text.includes('https://') ? new URL(text).searchParams.get('id') : text;
+          resultEl.textContent = result.getText();
+          console.log('検出:', result.getText());
+        }
+        if (err && err.name !== 'NotFoundException') {
+          console.error(err);
+        }
+      });
+    })
+    .catch(err => {
+      console.error("カメラの起動に失敗しました。", err);
+      resultEl.textContent = "カメラの起動に失敗しました。";
+    });
+</script>
 </html>
