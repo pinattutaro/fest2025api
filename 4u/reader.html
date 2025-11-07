@@ -16,24 +16,29 @@
     const preview = document.getElementById('preview');
     const resultEl = document.getElementById('result');
 
-    // ✅ 静的メソッドとして呼び出す（ここがポイント）
-    const devices = await BrowserMultiFormatReader.listVideoInputDevices();
+    const constraints = {
+      video: {
+        facingMode: "user" // フロントカメラを指定
+      }
+    };
 
-    if (devices.length === 0) {
-      resultEl.textContent = "カメラが見つかりません。";
-    } else {
-      const deviceId = devices[0].deviceId;
-
-      codeReader.decodeFromVideoDevice(deviceId, preview, (result, err) => {
-        if (result) {
-          resultEl.textContent = result.getText();
-          console.log('検出:', result.getText());
-        }
-        if (err && err.name !== 'NotFoundException') {
-          console.error(err);
-        }
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(stream => {
+        preview.srcObject = stream;
+        codeReader.decodeFromStream(stream, preview, (result, err) => {
+          if (result) {
+            resultEl.textContent = result.getText();
+            console.log('検出:', result.getText());
+          }
+          if (err && err.name !== 'NotFoundException') {
+            console.error(err);
+          }
+        });
+      })
+      .catch(err => {
+        console.error("カメラの起動に失敗しました。", err);
+        resultEl.textContent = "カメラの起動に失敗しました。";
       });
-    }
   </script>
 </body>
 </html>
