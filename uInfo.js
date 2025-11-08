@@ -8,6 +8,7 @@ const main = async () => {
         }
     });
 
+    console.log(response)
     console.log(response.status);
     const data = await response.json();
     console.log(data.data);

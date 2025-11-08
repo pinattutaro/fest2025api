@@ -1,4 +1,4 @@
-const id = "suUUlo"; // Replace with actual user ID
+const id = "jIAJg5"; // Replace with actual user ID
 
 const getData = async () => {
     const response = await fetch('https://pinattutaro.github.io/fest2025api/4u/env.json');
@@ -28,7 +28,7 @@ const main = async () => {
                     increment: 1
                 },
                 {
-                    flagName: "casino_roulette_played",
+                    flagName: "casino_poker_played",
                     increment: 1
                 }
             ]
