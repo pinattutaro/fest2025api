@@ -1,7 +1,7 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 async function main() {
-    const response = await fetch(`${process.env.URI}/api/admin/create-users`, {
+    const response = await fetch(`https://semirarely-expositional-aria.ngrok-free.dev/api/admin/create-users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
